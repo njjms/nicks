@@ -1,0 +1,41 @@
+library(nicks)
+library(tidyverse)
+
+setwd("~/Documents/prospera/prospera_heart_validation/heart_validation_analysis")
+
+selected_cases <- read_csv("../random_sampling/prospera_heart_validation_selected_cases_no_feasibility.csv")
+blinded_data <- read_csv("prospera_heart_validation_blinded_results.csv")
+
+selected_cases %>%
+  filter(result == "reject") %>%
+  pull(case_id_blinded) -> AR_cases
+length(AR_cases)
+
+selected_cases %>%
+  filter(result == "stable") %>%
+  pull(case_id_blinded) -> stable_cases
+length(stable_cases)
+
+# NC, QC Failures, TNP
+blinded_data %>%
+  filter(case_id_blinded %in% c(3826881, 9855898, 2724685)) %>%
+  select(case_id_blinded, sample_truth, resultCode)
+
+# Sensitivity Analysis
+blinded_data %>%
+  filter(case_id_blinded %in% AR_cases) %>%
+  pull(resultCode) %>% table()
+
+clopper_pearson(x=13, n=18, conf.level = .95)
+13/18
+
+# Specificity Analysis
+blinded_data %>%
+  filter(case_id_blinded %in% stable_cases) %>%
+  pull(resultCode) %>% table()
+
+clopper_pearson(x=65, n=87, conf.level=.95)
+65/87
+
+blinded_data %>%
+  filter(str_detect(resultCode, "(NC)|(TNP)"))

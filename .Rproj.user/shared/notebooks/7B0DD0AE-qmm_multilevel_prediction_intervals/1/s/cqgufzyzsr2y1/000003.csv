@@ -1,0 +1,9 @@
+"0","PI_qmm2 <- predictInterval(merMod = qmm_lmm,
+                          newdata = qmm_new_data,
+                          level = .95,
+                          n.sims=1000,
+                          stat=""median"",
+                          type=""probability"",
+                          include.resid.var = FALSE)
+"
+"2","    Asking for predictions on the probability scale makes no sense, resetting predict.type to linear.prediction"

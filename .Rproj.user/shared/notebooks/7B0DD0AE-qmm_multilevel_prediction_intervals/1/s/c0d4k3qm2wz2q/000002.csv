@@ -1,0 +1,10 @@
+"0","cbind(qmm_new_data, PI.boot1) %>% 
+  dplyr::select(model_size, plate, fit, lwr, upr) %>% 
+  dplyr::distinct() %>% 
+  dplyr::group_by(plate) %>% 
+  dplyr::summarise(
+    smallest_model_size = min(model_size[lwr > .85])
+  )
+"
+"2","`summarise()` ungrouping output (override with `.groups` argument)
+"
