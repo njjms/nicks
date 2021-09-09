@@ -20,4 +20,5 @@ Collate:
     'max_misses.R'
     'power_calculation.R'
     'power_neighborhood.R'
+    'rbt.R'
     'select_one_sample_per.R'

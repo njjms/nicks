@@ -99,27 +99,3 @@ power_calc <- function(sample_size,
 	)
 }
 
-possible_sample_sizes <- seq(500, 4000, by=10)
-lapply(c(.990, .985, .980),
-       FUN = function(x) sapply(
-         possible_sample_sizes,
-         FUN = function(y)
-           power_calc(sample_size = y,
-                      true_prob = x,
-                      requirement=.995,
-                      alpha=.05*2,
-                      requirement_type="gt",
-                      interval_type="cp",
-                      interval_surpasses=FALSE)$power
-         )) -> sens_calculations
-
-power_calc(sample_size = 1000,
-           true_prob = .99,
-           requirement=.995,
-           alpha=.05*2,
-           requirement_type="gt",
-           interval_type="cp",
-           interval_surpasses=FALSE)$power_config -> power_config
-power_config
-
-power_neighborhood(neighborhood=100, power_config = power_config)
