@@ -4,7 +4,7 @@
 \alias{rbt}
 \title{Randomized Binomial Test}
 \usage{
-rbt(x, n, p_h0, alpha = 0.05, alternative = "lt")
+rbt(x, n, p_h0, alpha = 0.05, requirement_type = "gt")
 }
 \arguments{
 \item{x}{observed count}
@@ -15,14 +15,14 @@ rbt(x, n, p_h0, alpha = 0.05, alternative = "lt")
 
 \item{alpha}{defaults to .05}
 
-\item{alternative}{form of alternative hypothesis, can be "lt" or "gt"}
+\item{requirement_type}{form of alternative hypothesis, defaults to "gt"}
 }
 \value{
-Single boolean; TRUE for rejection, FALSE for non-rejection
+list containing rejection bound, rejection region, gamma probability, and outcome of RBT
 }
 \description{
-In short, an RBT rejects borderline cases with \gamma probability. 
-Whereas tests on binomial data as performed with Clopper-Pearson intervals 
+In short, an RBT rejects borderline cases with \gamma probability.
+Whereas tests on binomial data as performed with Clopper-Pearson intervals
 or Wilson Score intervals usually have test size < nominal significance \alpha
 level, an RBT will be guaranteed to always have theoretical size == \alpha.
 }
@@ -35,7 +35,7 @@ and Clopper-Pearson based testing.
 \examples{
 output <- vector(length=100, mode="numeric")
 for (i in 1:100) {
-  output[i] <- rbt(x=7, n=100, alpha=.05, alternative="lt")
+  output[i] <- rbt(x=7, n=100, alpha=.05, requirement_type="gt")
 }
 mean(output) # should be about .526
 }

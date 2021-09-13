@@ -11,7 +11,8 @@ power_calc(
   requirement_type = "gt",
   alpha,
   interval_type = "cp",
-  interval_surpasses = FALSE
+  interval_surpasses = FALSE,
+  point_surpasses = FALSE
 )
 }
 \arguments{
@@ -28,9 +29,11 @@ power_calc(
 \item{interval_type}{defaults to "cp" (Clopper-Pearson). Can be set to "ws" (wilson_score)}
 
 \item{interval_surpasses}{defaults to FALSE, meaning only upper bound has to exceed}
+
+\item{point_surpasses}{defaults to FALSE. TRUE indicates point estimate has to exceed requirement to pass}
 }
 \value{
-list containing calculation power (float) and df of binomial pmf, calculated confidence intervals, and samples that pass the requirement
+list containing parameters of power calculation (float), df of power calculation results, and power (float)
 }
 \description{
 Calculates power in a binomial experiment setting, given a sample size, true_prob, requirement, and significance level.

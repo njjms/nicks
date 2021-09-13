@@ -4,7 +4,7 @@
 #' sample size by a small amount.
 #'
 #' @param neighborhood the neighborhood to search in
-#' @param power_config a list containing the specificiations for a power calculation
+#' @param power_config a list containing the specifications for a power calculation
 #' @return list containing baseline power (float) and smallest sample size in neighborhood that achieves that power
 #' @include power_calculation.R
 #' @examples

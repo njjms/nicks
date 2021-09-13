@@ -21,4 +21,5 @@ Collate:
     'power_calculation.R'
     'power_neighborhood.R'
     'rbt.R'
+    'rbt_power.R'
     'select_one_sample_per.R'

@@ -9,7 +9,8 @@
 #' @param alpha the significance level for a two-sided interval
 #' @param interval_type defaults to "cp" (Clopper-Pearson). Can be set to "ws" (wilson_score)
 #' @param interval_surpasses defaults to FALSE, meaning only upper bound has to exceed
-#' @return list containing calculation power (float) and df of binomial pmf, calculated confidence intervals, and samples that pass the requirement
+#' @param point_surpasses defaults to FALSE. TRUE indicates point estimate has to exceed requirement to pass
+#' @return list containing parameters of power calculation (float), df of power calculation results, and power (float)
 #' @include clopper_pearson.R wilson_score.R
 #' @examples
 #'
@@ -49,20 +50,22 @@
 #'	theme_bw()
 
 power_calc <- function(sample_size,
-					   true_prob,
-					   requirement,
-					   requirement_type="gt",
-					   alpha,
-					   interval_type="cp",
-					   interval_surpasses=FALSE) {
+					             true_prob,
+					             requirement,
+					             requirement_type="gt",
+					             alpha,
+					             interval_type="cp",
+					             interval_surpasses=FALSE,
+					             point_surpasses=FALSE) {
 	conf_ints <- switch(
 		interval_type,
-		"ws" = sapply(0:sample_size, FUN = function(x) wilson_score(x, n=sample_size,conf.level=1-alpha)),
-		"cp" = sapply(0:sample_size, FUN = function(x) clopper_pearson(x, n=sample_size,conf.level=1-alpha))
+		"ws" = sapply(0:sample_size, FUN = function(x) wilson_score(x, n=sample_size, conf.level=1-alpha)),
+		"cp" = sapply(0:sample_size, FUN = function(x) clopper_pearson(x, n=sample_size, conf.level=1-alpha))
 	)
 
 	data.frame(
 		obs=0:sample_size,
+		point=(0:sample_size)/sample_size,
 		prob=dbinom(x=0:sample_size, size=sample_size, prob=true_prob),
 		lower_bound = unlist(conf_ints["lower",]),
 		upper_bound = unlist(conf_ints["upper",])
@@ -75,11 +78,19 @@ power_calc <- function(sample_size,
   		"gt" = ifelse(binom_prob_df$lower_bound >= requirement, 1, 0)
   	)
 	} else {
-  	binom_prob_df$pass <- switch(
-  		requirement_type,
-  		"lt" = ifelse(binom_prob_df$lower_bound <= requirement, 1, 0),
-  		"gt" = ifelse(binom_prob_df$upper_bound >= requirement, 1, 0)
-  	)
+	  if (point_surpasses) {
+    	binom_prob_df$pass <- switch(
+    		requirement_type,
+    		"lt" = ifelse(binom_prob_df$point <= requirement, 1, 0),
+    		"gt" = ifelse(binom_prob_df$point >= requirement, 1, 0)
+    	)
+	  } else {
+    	binom_prob_df$pass <- switch(
+    		requirement_type,
+    		"lt" = ifelse(binom_prob_df$lower_bound <= requirement, 1, 0),
+    		"gt" = ifelse(binom_prob_df$upper_bound >= requirement, 1, 0)
+    	)
+	  }
 	}
 
 	return(

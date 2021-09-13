@@ -9,7 +9,7 @@ power_neighborhood(neighborhood, power_config)
 \arguments{
 \item{neighborhood}{the neighborhood to search in}
 
-\item{power_config}{a list containing the specificiations for a power calculation}
+\item{power_config}{a list containing the specifications for a power calculation}
 }
 \value{
 list containing baseline power (float) and smallest sample size in neighborhood that achieves that power
