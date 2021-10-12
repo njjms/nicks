@@ -11,7 +11,8 @@ clopper_pearson <- function(x, n, conf.level=.95) {
 	return(
 		list(
 			lower=qbeta((1-conf.level)/2, x, n-x+1),
-			upper=qbeta(1-((1-conf.level)/2), x+1, n-x)
+			upper=qbeta(1-((1-conf.level)/2), x+1, n-x),
+			point_estimate=x/n
 		)
 	)
 }

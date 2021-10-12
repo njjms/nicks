@@ -15,7 +15,8 @@ wilson_score <- function(x, n, conf.level=.95) {
 	return(
 		list(
 			lower = midpoint - margin,
-			upper = midpoint + margin
+			upper = midpoint + margin,
+			point_estimate = p_hat
 		)
 	)
 }

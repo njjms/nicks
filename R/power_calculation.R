@@ -10,6 +10,7 @@
 #' @param interval_type defaults to "cp" (Clopper-Pearson). Can be set to "ws" (wilson_score)
 #' @param interval_surpasses defaults to FALSE, meaning only upper bound has to exceed
 #' @param point_surpasses defaults to FALSE. TRUE indicates point estimate has to exceed requirement to pass
+#' @param prq_delta defaults to NA. A numeric value here indicates the minimum acceptable acceptance criteria (product requirement plus/minus some delta).
 #' @return list containing parameters of power calculation (float), df of power calculation results, and power (float)
 #' @include clopper_pearson.R wilson_score.R
 #' @examples
@@ -72,11 +73,19 @@ power_calc <- function(sample_size,
 	) -> binom_prob_df
 
 	if (interval_surpasses) {
-  	binom_prob_df$pass <- switch(
-  		requirement_type,
-  		"lt" = ifelse(binom_prob_df$upper_bound <= requirement, 1, 0),
-  		"gt" = ifelse(binom_prob_df$lower_bound >= requirement, 1, 0)
-  	)
+	  if (!is.na(prq_delta)) {
+    	binom_prob_df$pass <- switch(
+    		requirement_type,
+    		"lt" = ifelse(binom_prob_df$upper_bound <= prq_delta, 1, 0),
+    		"gt" = ifelse(binom_prob_df$lower_bound >= prq_delta, 1, 0)
+    	)
+	  } else {
+    	binom_prob_df$pass <- switch(
+    		requirement_type,
+    		"lt" = ifelse(binom_prob_df$upper_bound <= requirement, 1, 0),
+    		"gt" = ifelse(binom_prob_df$lower_bound >= requirement, 1, 0)
+    	)
+	  }
 	} else {
 	  if (point_surpasses) {
     	binom_prob_df$pass <- switch(
