@@ -8,9 +8,9 @@
 #' @param requirement_type defaults to "gt" (greater than). Can be set to "lt" (less than)
 #' @param alpha the significance level for a two-sided interval
 #' @param interval_type defaults to "cp" (Clopper-Pearson). Can be set to "ws" (wilson_score)
-#' @param interval_surpasses defaults to FALSE, meaning only upper bound has to exceed
+#' @param interval_surpasses defaults to FALSE, meaning only upper bound has to exceed requirement (or minimum acceptable acceptance criteria)
 #' @param point_surpasses defaults to FALSE. TRUE indicates point estimate has to exceed requirement to pass
-#' @param prq_delta defaults to NA. A numeric value here indicates the minimum acceptable acceptance criteria (product requirement plus/minus some delta).
+#' @param prq_delta defaults to NA. A numeric value here indicates the minimum acceptable acceptance criteria (product requirement plus/minus some delta). interval_surpasses must be set to TRUE
 #' @return list containing parameters of power calculation (float), df of power calculation results, and power (float)
 #' @include clopper_pearson.R wilson_score.R
 #' @examples
@@ -57,7 +57,8 @@ power_calc <- function(sample_size,
 					             alpha,
 					             interval_type="cp",
 					             interval_surpasses=FALSE,
-					             point_surpasses=FALSE) {
+					             point_surpasses=FALSE,
+					             prq_delta = NA) {
 	conf_ints <- switch(
 		interval_type,
 		"ws" = sapply(0:sample_size, FUN = function(x) wilson_score(x, n=sample_size, conf.level=1-alpha)),
