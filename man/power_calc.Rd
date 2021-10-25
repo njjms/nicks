@@ -12,7 +12,8 @@ power_calc(
   alpha,
   interval_type = "cp",
   interval_surpasses = FALSE,
-  point_surpasses = FALSE
+  point_surpasses = FALSE,
+  prq_delta = NA
 )
 }
 \arguments{
@@ -28,9 +29,11 @@ power_calc(
 
 \item{interval_type}{defaults to "cp" (Clopper-Pearson). Can be set to "ws" (wilson_score)}
 
-\item{interval_surpasses}{defaults to FALSE, meaning only upper bound has to exceed}
+\item{interval_surpasses}{defaults to FALSE, meaning only upper bound has to exceed requirement (or minimum acceptable acceptance criteria)}
 
 \item{point_surpasses}{defaults to FALSE. TRUE indicates point estimate has to exceed requirement to pass}
+
+\item{prq_delta}{defaults to NA. A numeric value here indicates the minimum acceptable acceptance criteria (product requirement plus/minus some delta). interval_surpasses must be set to TRUE}
 }
 \value{
 list containing parameters of power calculation (float), df of power calculation results, and power (float)

@@ -14,7 +14,7 @@ clopper_pearson(x, n, conf.level = 0.95)
 \item{conf.level}{defaults to .95}
 }
 \value{
-a 2-element list with "upper" and "lower"
+a 3-element list with "upper", "lower", and "point_estimate"
 }
 \description{
 Creates Clopper-Pearson binomial confidence intervals

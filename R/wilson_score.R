@@ -3,7 +3,7 @@
 #' @param x observed count
 #' @param n total count
 #' @param conf.level defaults to .95
-#' @return a 2-element list with "upper" and "lower"
+#' @return a 3-element list with "upper", "lower", and "point_estimate"
 #' @examples
 #' wilson_score(x=84, n=85, conf.level=.95)
 
