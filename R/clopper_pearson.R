@@ -8,6 +8,12 @@
 #' clopper_pearson(x=84, n=85, conf.level=.95)
 
 clopper_pearson <- function(x, n, conf.level=.95) {
+  if (x > n) {
+    stop("Number of successes (x) cannot be greater than sample size (n).")
+  }
+  if (conf.level > 1) {
+    stop("conf.level cannot be larger than 1.")
+  }
 	return(
 		list(
 			lower=qbeta((1-conf.level)/2, x, n-x+1),

@@ -22,3 +22,6 @@ Collate:
     'rbt.R'
     'rbt_power.R'
     'select_one_sample_per.R'
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

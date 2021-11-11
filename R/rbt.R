@@ -28,6 +28,12 @@ rbt <- function(x,
                 p_h0,
                 alpha=.05,
                 requirement_type="gt") {
+  if (x > n) {
+    stop("Number of successes (x) cannot be greater than sample size (n).")
+  }
+  if (alpha > 1 | alpha < 0) {
+    stop("alpha must be between 0 and 1.")
+  }
   if (requirement_type == "gt") {
     rejection_bound = qbinom(alpha,
                              size=n,
