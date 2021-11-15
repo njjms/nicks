@@ -110,7 +110,8 @@ power_calc <- function(sample_size,
 			  requirement_type = requirement_type,
 			  alpha = alpha,
 			  interval_type = interval_type,
-			  interval_surpasses = interval_surpasses
+			  AC_type = AC_type,
+			  pre_delta = prq_delta
 			),
 			df = binom_prob_df,
 			power = sum(binom_prob_df[binom_prob_df$pass == 0, "prob"])
