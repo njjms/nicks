@@ -10,9 +10,8 @@ power_calc(
   requirement,
   requirement_type = "gt",
   alpha,
-  interval_type = "cp",
-  interval_surpasses = FALSE,
-  point_surpasses = FALSE,
+  interval_type = "ws",
+  AC_type = "medium",
   prq_delta = NA
 )
 }
@@ -27,13 +26,11 @@ power_calc(
 
 \item{alpha}{the significance level for a two-sided interval}
 
-\item{interval_type}{defaults to "cp" (Clopper-Pearson). Can be set to "ws" (wilson_score)}
+\item{interval_type}{defaults to "ws" (wilson_score). Can be set to "cp " (Clopper-Pearson)}
 
-\item{interval_surpasses}{defaults to FALSE, meaning only upper bound has to exceed requirement (or minimum acceptable acceptance criteria)}
+\item{AC_type}{specifies the acceptance criteria to be used. Defaults to "medium" (point estimate surpasses requirement). Can be set to "low" (interval includes or surpasses req), "high" (interval surpasses requirement), or "high_delta" (interval surpasses prq_delta and point estimate surpasses requirement)}
 
-\item{point_surpasses}{defaults to FALSE. TRUE indicates point estimate has to exceed requirement to pass}
-
-\item{prq_delta}{defaults to NA. A numeric value here indicates the minimum acceptable acceptance criteria (product requirement plus/minus some delta). interval_surpasses must be set to TRUE}
+\item{prq_delta}{defaults to NA. A numeric value here indicates the minimum acceptable acceptance criteria (product requirement plus/minus some delta). Only used if AC_type = "high_delta"}
 }
 \value{
 list containing parameters of power calculation (float), df of power calculation results, and power (float)
@@ -53,7 +50,7 @@ lapply(c(.990, .985, .980),
                       alpha=significance_level*2,
                       requirement_type="gt",
                       interval_type="cp",
-                      interval_surpasses=FALSE)$power
+                      AC_type="low")$power
          )) -> sens_calculations
 ggplot(
 data.frame(
