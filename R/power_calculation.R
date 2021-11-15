@@ -7,10 +7,9 @@
 #' @param requirement the required underlying probability of success
 #' @param requirement_type defaults to "gt" (greater than). Can be set to "lt" (less than)
 #' @param alpha the significance level for a two-sided interval
-#' @param interval_type defaults to "cp" (Clopper-Pearson). Can be set to "ws" (wilson_score)
-#' @param interval_surpasses defaults to FALSE, meaning only upper bound has to exceed requirement (or minimum acceptable acceptance criteria)
-#' @param point_surpasses defaults to FALSE. TRUE indicates point estimate has to exceed requirement to pass
-#' @param prq_delta defaults to NA. A numeric value here indicates the minimum acceptable acceptance criteria (product requirement plus/minus some delta). interval_surpasses must be set to TRUE
+#' @param interval_type defaults to "ws" (wilson_score). Can be set to "cp " (Clopper-Pearson)
+#' @param AC_type specifies the acceptance criteria to be used. Defaults to "medium" (point estimate surpasses requirement). Can be set to "low" (interval includes or surpasses req), "high" (interval surpasses requirement), or "high_delta" (interval surpasses prq_delta and point estimate surpasses requirement)
+#' @param prq_delta defaults to NA. A numeric value here indicates the minimum acceptable acceptance criteria (product requirement plus/minus some delta). Only used if AC_type = "high_delta"
 #' @return list containing parameters of power calculation (float), df of power calculation results, and power (float)
 #' @include clopper_pearson.R wilson_score.R
 #' @examples
@@ -25,7 +24,7 @@
 #'                       alpha=significance_level*2,
 #'                       requirement_type="gt",
 #'                       interval_type="cp",
-#'                       interval_surpasses=FALSE)$power
+#'                       AC_type="low")$power
 #'          )) -> sens_calculations
 #'ggplot(
 #'	data.frame(
@@ -55,9 +54,8 @@ power_calc <- function(sample_size,
 					             requirement,
 					             requirement_type="gt",
 					             alpha,
-					             interval_type="cp",
-					             interval_surpasses=FALSE,
-					             point_surpasses=FALSE,
+					             interval_type="ws",
+					             AC_type="medium",
 					             prq_delta = NA) {
 	conf_ints <- switch(
 		interval_type,
@@ -73,35 +71,35 @@ power_calc <- function(sample_size,
 		upper_bound = unlist(conf_ints["upper",])
 	) -> binom_prob_df
 
-	if (interval_surpasses) {
-	  if (!is.na(prq_delta)) {
-    	binom_prob_df$pass <- switch(
-    		requirement_type,
-    		"lt" = ifelse(binom_prob_df$upper_bound <= prq_delta, 1, 0),
-    		"gt" = ifelse(binom_prob_df$lower_bound >= prq_delta, 1, 0)
-    	)
-	  } else {
-    	binom_prob_df$pass <- switch(
-    		requirement_type,
-    		"lt" = ifelse(binom_prob_df$upper_bound <= requirement, 1, 0),
-    		"gt" = ifelse(binom_prob_df$lower_bound >= requirement, 1, 0)
-    	)
-	  }
-	} else {
-	  if (point_surpasses) {
-    	binom_prob_df$pass <- switch(
-    		requirement_type,
-    		"lt" = ifelse(binom_prob_df$point <= requirement, 1, 0),
-    		"gt" = ifelse(binom_prob_df$point >= requirement, 1, 0)
-    	)
-	  } else {
-    	binom_prob_df$pass <- switch(
-    		requirement_type,
-    		"lt" = ifelse(binom_prob_df$lower_bound <= requirement, 1, 0),
-    		"gt" = ifelse(binom_prob_df$upper_bound >= requirement, 1, 0)
-    	)
-	  }
+	if (AC_type=="high_delta" & is.na(prq_delta)) {
+	  stop("You must specify prq_delta for AC_type=high_delta")
 	}
+	if (!(AC_type %in% c("high_delta","high","medium","low"))) {
+	  stop("Please specify a valid AC_type")
+	}
+	binom_prob_df$pass <- switch(
+	  AC_type,
+	  "high_delta" = switch(
+	    requirement_type,
+	    "lt" = ifelse(binom_prob_df$upper_bound <= prq_delta & binom_prob_df$point <= requirement, 1, 0),
+	    "gt" = ifelse(binom_prob_df$lower_bound >= prq_delta & binom_prob_df$point >= requirement, 1, 0)
+	  ),
+	  "high" = switch(
+	    requirement_type,
+	    "lt" = ifelse(binom_prob_df$upper_bound <= requirement, 1, 0),
+	    "gt" = ifelse(binom_prob_df$lower_bound >= requirement, 1, 0)
+	  ),
+	  "medium" = switch(
+	    requirement_type,
+	    "lt" = ifelse(binom_prob_df$point <= requirement, 1, 0),
+	    "gt" = ifelse(binom_prob_df$point >= requirement, 1, 0)
+	  ),
+	  "low" = switch(
+	    requirement_type,
+	    "lt" = ifelse(binom_prob_df$lower_bound <= requirement, 1, 0),
+	    "gt" = ifelse(binom_prob_df$upper_bound >= requirement, 1, 0)
+	  )
+	)
 
 	return(
 		list(
@@ -112,7 +110,8 @@ power_calc <- function(sample_size,
 			  requirement_type = requirement_type,
 			  alpha = alpha,
 			  interval_type = interval_type,
-			  interval_surpasses = interval_surpasses
+			  AC_type = AC_type,
+			  pre_delta = prq_delta
 			),
 			df = binom_prob_df,
 			power = sum(binom_prob_df[binom_prob_df$pass == 0, "prob"])

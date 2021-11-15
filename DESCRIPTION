@@ -1,14 +1,14 @@
 Package: biostatslib
 Type: Package
 Title: Basic Functions for Biostatistics
-Version: 0.1.0
+Version: 0.1.1
 Author: Nick Sun
 Maintainer: Nick Sun <nsun@natera.com>
 Description: Various functions for power calculations, FWER simulations, etc.
 License: MIT
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1.9001
+RoxygenNote: 7.1.2
 Collate: 
     'adjusted_signatera_confidence.R'
     'clopper_pearson.R'
