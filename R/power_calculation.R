@@ -52,10 +52,10 @@
 power_calc <- function(sample_size,
 					             true_prob,
 					             requirement,
-					             requirement_type="gt",
+					             requirement_type = "gt",
 					             alpha,
-					             interval_type="ws",
-					             AC_type="medium",
+					             interval_type = "ws",
+					             AC_type = "medium",
 					             prq_delta = NA) {
 	conf_ints <- switch(
 		interval_type,
@@ -111,7 +111,7 @@ power_calc <- function(sample_size,
 			  alpha = alpha,
 			  interval_type = interval_type,
 			  AC_type = AC_type,
-			  pre_delta = prq_delta
+			  prq_delta = prq_delta
 			),
 			df = binom_prob_df,
 			power = sum(binom_prob_df[binom_prob_df$pass == 0, "prob"])

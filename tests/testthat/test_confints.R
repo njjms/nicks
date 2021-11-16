@@ -1,5 +1,4 @@
-context("Confidence intervals")
-library(nicks)
+library(biostatslib)
 library(PropCIs)
 
 test_that("Clopper-Pearson intevals give correct values", {
