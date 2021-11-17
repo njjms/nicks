@@ -25,7 +25,8 @@ power_neighborhood <- function(neighborhood,
 						  requirement_type = power_config$requirement_type,
 						  alpha = power_config$alpha,
 						  interval_type = power_config$interval_type,
-						  interval_surpasses = power_config$interval_surpasses)$power)
+						  AC_type = power_config$AC_type,
+						  prq_delta = power_config$prq_delta)$power)
 
 	output_df <- data.frame(
 		n = potential_sample_sizes,
