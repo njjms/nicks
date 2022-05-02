@@ -7,6 +7,7 @@
 #' @return df with "adjustedMutationPresent" column added
 #' @examples
 #' adjust_sig_positives(df)
+#' @export
 
 sig_adjust_confidences <- function(input_df, amplicon_id=TRUE) {
 	if (amplicon_id) {

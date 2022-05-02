@@ -22,6 +22,7 @@
 #'   output[i] <- rbt(x=7, n=100, alpha=.05, requirement_type="gt")
 #' }
 #' mean(output) # should be about .526
+#' @export
 
 rbt <- function(x,
                 n,

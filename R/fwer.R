@@ -13,6 +13,7 @@
 #'    	requirements = c(.99, .95, .04)
 #' )
 #' fwer(requirements_df=fake_data, nsims=10000, conf.level=.95)
+#' @export
 
 fwer <- function(requirements_df,
 				 nsims=10000,

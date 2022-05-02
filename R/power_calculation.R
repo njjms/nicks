@@ -48,6 +48,7 @@
 #'								  "true_sens_980")) +
 #'	labs(title="Detecting Deviation in Sensitivity from p=.995", x="n", y="Power") +
 #'	theme_bw()
+#'	@export
 
 power_calc <- function(sample_size,
 					             true_prob,

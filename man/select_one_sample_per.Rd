@@ -27,10 +27,10 @@ test_data <- data.frame(
 	casefile_id = seq_along(1:nrows)
 )
 
-test_data \%>\% 
+test_data \%>\%
 	mutate(
 		status = if_else(test < .80, "STABLE", "AR")
-	) \%>\% 
+	) \%>\%
 	select(-test) -> test_data
 
 select_one_sample_per(test_data, patient_ids, status)

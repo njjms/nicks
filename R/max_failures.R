@@ -5,6 +5,7 @@
 #' @return an int for max number of sample failures, and df containing binomial probabilities
 #' @examples
 #' max_failures(n=20, prob=.0125)
+#' @export
 
 max_failures <- function(n, prob) {
 	x = 0:n

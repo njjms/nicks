@@ -11,7 +11,7 @@
 #' @param alpha the significance level for a two-sided interval. Defaults to .05
 #' @return list containing parameters of power calculation (float), df of power calculation results, and power (float)
 #' @include rbt.R
-#'
+#' @export
 
 rbt_power_calc <- function(sample_size,
 					                 true_p,

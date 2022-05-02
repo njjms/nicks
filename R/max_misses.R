@@ -8,6 +8,7 @@
 #' @include clopper_pearson.R wilson_score.R
 #' @examples
 #' max_misses(n=20, requirement = .95)
+#' @export
 
 max_misses <- function(n,
                          conf.level=.95,

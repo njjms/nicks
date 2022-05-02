@@ -6,6 +6,7 @@
 #' @return a 3-element list with "upper", "lower", and "point_estimate"
 #' @examples
 #' wilson_score(x=84, n=85, conf.level=.95)
+#' @export
 
 wilson_score <- function(x, n, conf.level=.95) {
   if (x > n) {

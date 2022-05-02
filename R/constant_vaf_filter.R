@@ -5,6 +5,7 @@
 #' @return df with a binary labelling column "constant_vaf_target": 1 if yes, 0 if no
 #' @examples
 #' sig_constant_vaf(df, constant_vaf_bound = .3)
+#' @export
 
 sig_constant_vaf <- function(.data, constant_vaf_bound = .3) {
 	dplyr::group_by(.data=.data, amplicon_id) -> output_df
@@ -15,5 +16,5 @@ sig_constant_vaf <- function(.data, constant_vaf_bound = .3) {
 	dplyr::ungroup(output_df) -> output_df
 	dplyr::distinct(output_df) -> output_df
 	return(output_df)
-	
+
 }

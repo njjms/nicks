@@ -6,6 +6,7 @@
 #' @return a 3-element list with "upper", "lower", and "point_estimate"
 #' @examples
 #' clopper_pearson(x=84, n=85, conf.level=.95)
+#' @export
 
 clopper_pearson <- function(x, n, conf.level=.95) {
   if (x > n) {
